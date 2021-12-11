@@ -6,6 +6,7 @@ const crud = require('../db/crud')
 
 router.post('/upload', (req, res) => {
     try {
+        console.log('hit endpoint')
         crud.addVideo(req.files.file, req.body)
         res.status(201).send("Video successfuly added")
     } catch (err) {
