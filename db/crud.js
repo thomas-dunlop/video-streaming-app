@@ -7,7 +7,7 @@ const addVideo = async (file, body) => {
 
     var bucket = new mongodb.GridFSBucket(dbConnect, {
         bucketName: 'videos'
-      })
+    })
 
     await fs.createReadStream(file.name)
     .pipe(
@@ -22,16 +22,28 @@ const addVideo = async (file, body) => {
 
 const getVideoById = async (id) => {
     const dbConnect = dbo.getDb();
-    const video = await dbConnect.collection('videos').findOne({id: id})
+    const video = await dbConnect.collection('videos.files').findOne(mongodb.ObjectId(id))
 
     if (video) {
         return video
     } else {
-        throw "Video not found"
+        throw new Error("Video not found")
+    }    
+}
+
+const getAllVideos = async () => {
+    const dbConnect = dbo.getDb();
+    const videos = await dbConnect.collection('videos.files').find().toArray()
+
+    if (videos) {
+        return videos
+    } else {
+        throw new Error("Videos not found")
     }
 }
 
 module.exports = {
     addVideo,
-    getVideoById
+    getVideoById,
+    getAllVideos
 }
