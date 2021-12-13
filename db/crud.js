@@ -8,16 +8,16 @@ const addVideo = async (file, body) => {
     var bucket = new mongodb.GridFSBucket(dbConnect, {
         bucketName: 'videos'
     })
-
-    await fs.createReadStream(file.name)
-    .pipe(
-        bucket.openUploadStream(file.name, {
-            metadata: {
-                "name": body.name,
-                "value": body.value
-            }
-        })
-    )
+    
+    await fs.createReadStream(file.tempFilePath)
+        .pipe(
+            bucket.openUploadStream(file.name, {
+                metadata: {
+                    "name": body.name,
+                    "value": body.value
+                }
+            })
+        )
 }
 
 const getVideoById = async (id) => {
