@@ -31,19 +31,19 @@ const getVideoById = async (id) => {
   }
 }
 
-const getAllVideos = async () => {
+const getVideosByQuery = async (query) => {
   const dbConnect = dbo.getDb();
-  const videos = await dbConnect.collection('videos.files').find().toArray()
+  const videos = await dbConnect.collection('videos.files').find(query).toArray()
 
   if (videos) {
     return videos
   } else {
-    throw new Error("Videos not found")
+    throw new Error("Video not found")
   }
 }
 
 module.exports = {
   addVideo,
   getVideoById,
-  getAllVideos
+  getVideosByQuery
 }

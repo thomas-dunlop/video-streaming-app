@@ -6,33 +6,37 @@ const crud = require('../db/crud')
 
 router.post('/upload', async (req, res) => {
   try {
-    await crud.addVideo(req.files.file, req.body)
-    res.status(201).send("Video successfuly added")
+    await crud.addVideo(req.files.file, req.body);
+    res.status(201).send("Video successfuly added");
   } catch (err) {
-    res.status(500).send(err)
+    res.status(500).send(err);
   }
 })
 
 router.get('/videos', async (req, res) => {
   try {
-    const videos = await crud.getAllVideos();
-    res.status(201).send(videos)
+    const videos = await crud.getVideosByQuery(req.query);
+    res.status(200).send(videos);
   } catch (err) {
-    res.status(404).send(err)
+    res.status(404).send(err);
   }
 })
 
 router.get('/videos/:videoId', async (req, res) => {
   try {
+    const video = await crud.getVideoById(req.params.videoId);
+    res.status(200).send(video);
+  } catch (err) {
+    res.status(404).send(err);
+  }
+})
+  
+router.get('/stream/:videoId', async (req, res) => {
+  try {
     const dbConnect = dbo.getDb();
-
-    var bucket = new mongodb.GridFSBucket(dbConnect, {
-      bucketName: 'videos'
-    })
-
-    await crud.getVideoById(req.params.videoId)
-
-    bucket.openDownloadStream(mongodb.ObjectId(req.params.videoId)).pipe(res)
+    var bucket = new mongodb.GridFSBucket(dbConnect, {bucketName: 'videos'});
+    await crud.getVideoById(req.params.videoId);
+    bucket.openDownloadStream(mongodb.ObjectId(req.params.videoId)).pipe(res);
   } catch (err) {
     res.status(404).send(err)
   }
