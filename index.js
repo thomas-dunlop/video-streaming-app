@@ -10,7 +10,7 @@ const port = 3000
 app.use(express.json());
 app.use(fileUpload({
   useTempFiles: true,
-  tempFileDir : '/tmp/'
+  tempFileDir: '/tmp/'
 }));
 app.use(cors())
 app.use(express.static(path.join(__dirname, "build")));
@@ -24,12 +24,12 @@ app.get("*", (req, res) => {
 })
 
 dbo.connectToServer(function (err) {
-    if (err) {
-      console.error(err);
-      process.exit();
-    }
-  
-    app.listen(port, () => {
-      console.log(`Server is running on port: ${port}`);
-    });
+  if (err) {
+    console.error(err);
+    process.exit();
+  }
+
+  app.listen(port, () => {
+    console.log(`Server is running on port: ${port}`);
   });
+});
