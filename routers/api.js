@@ -30,7 +30,7 @@ router.get('/videos/:videoId', async (req, res) => {
       bucketName: 'videos'
     })
 
-    const video = await crud.getVideoById(req.params.videoId)
+    await crud.getVideoById(req.params.videoId)
 
     bucket.openDownloadStream(mongodb.ObjectId(req.params.videoId)).pipe(res)
   } catch (err) {
