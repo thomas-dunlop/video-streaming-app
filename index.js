@@ -5,7 +5,7 @@ const fileUpload = require('express-fileupload');
 var cors = require('cors')
 const dbo = require('./db/conn')
 const app = express()
-const port = 3000
+const port = process.env.PORT || 3000
 
 app.use(express.json());
 app.use(fileUpload({
